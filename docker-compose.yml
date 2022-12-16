@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  super-bomber-elf-client:
+    build: .
+    container_name: super-bomber-elf-client
+    command: >
+      sh -c "cd client && stack runhaskell Shake.hs"
+    working_dir: /usr/src
+    volumes:
+      - ./:/usr/src/
+
+  super-bomber-elf-server:
+    build: ./
+    container_name: super-bomber-elf-server
+    command: >
+      sh -c "cd server &&
+             cp bomberman.docker.yaml ~/.bomberman.yaml &&
+             stack build &&
+             stack exec bomberman"
+    working_dir: /usr/src
+    volumes:
+      - ./:/usr/src
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    depends_on:
+      - "super-bomber-elf-client"

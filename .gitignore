@@ -6,3 +6,4 @@ TAGS
 /client/smake
 *.o
 *.hi
+.idea
